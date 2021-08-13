@@ -1,6 +1,6 @@
 <template>
   <main>
-    <section>
+    <section class="login">
       <div class="container">
         <div class="user signinBx">
           <div class="imgBx">
