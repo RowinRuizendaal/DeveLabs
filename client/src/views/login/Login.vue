@@ -13,6 +13,7 @@
               enctype="application/x-www-form-urlencoded"
             >
               <h2>Sign In</h2>
+              <p v-if="error">{{ error }}</p>
               <input
                 type="text"
                 name="username"
@@ -48,6 +49,7 @@ export default {
     return {
       userName: "",
       password: "",
+      error: "",
     };
   },
   methods: {
@@ -56,6 +58,15 @@ export default {
         userName: this.userName.toLowerCase(),
         password: this.password,
       };
+
+      if (
+        data.userName === "" ||
+        !data.userName ||
+        !data.password === "" ||
+        !data.password
+      ) {
+        return (this.error = "Not a valid user");
+      }
       axios
         .post("/api/login", data)
         .then((response) => {
@@ -66,6 +77,7 @@ export default {
         })
         .catch((err) => {
           console.log(err);
+          this.error = err;
         });
     },
     onSubmit(e) {

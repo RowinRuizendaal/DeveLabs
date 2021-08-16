@@ -1,6 +1,10 @@
 <template>
   <div class="topbar">
-    <div class="toggle"></div>
+    <div
+      class="toggle"
+      @click="toggle"
+      :class="{ active: $store.state.openmenu }"
+    ></div>
     <Search />
     <Avatar />
   </div>
@@ -14,6 +18,11 @@ export default {
   components: {
     Search,
     Avatar,
+  },
+  methods: {
+    toggle() {
+      return this.$store.commit("openMenu");
+    },
   },
 };
 </script>

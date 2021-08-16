@@ -2,7 +2,7 @@
   <div class="search">
     <label for="search">
       <input type="text" name="" id="" placeholder="search here" />
-      <i class="" aria-hidden="true"></i>
+      <i class="fa fa-search" aria-hidden="true"></i>
     </label>
   </div>
 </template>

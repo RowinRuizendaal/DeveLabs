@@ -2,6 +2,7 @@
 node_modules
 /dist
 /public
+.rest
 
 
 # local env files

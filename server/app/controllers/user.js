@@ -2,7 +2,12 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
 
-const { checkValidUser, findOneUser } = require("../helpers/database.js");
+const {
+    checkValidUser,
+    findOneUser,
+    createUser,
+    getAllUsers,
+} = require("../helpers/database.js");
 
 async function handleLogin(req, res) {
     const user = await checkValidUser(req.body.userName, req.body.password);
@@ -19,27 +24,50 @@ async function handleLogin(req, res) {
 }
 
 async function handleUser(req, res) {
-    let token = req.headers.token; // JWT token
+    let userData = await findOneUser(req.user.userId);
 
-    jwt.verify(token, "JWTSECRET", async(err, decoded) => {
-        if (err)
-            return res.status(401).json({
-                title: "unauthorized",
-            });
+    if (userData) {
+        return res.status(200).json({
+            title: "User found",
+            userData,
+        });
+    }
+}
 
-        // token is valid
-        let userData = await findOneUser(decoded.userId);
+async function handleUsers(req, res) {
+    let getUsers = await getAllUsers();
 
-        if (userData) {
-            return res.status(200).json({
-                title: "User found",
-                userData,
-            });
-        }
-    });
+    if (getUsers) {
+        return res.status(200).json({
+            title: "User data has been fetched",
+            getUsers,
+        });
+    }
+    console.log(getUsers);
+}
+
+async function registerUser(req, res) {
+    //Salt the plain password
+    const passwordHash = bcrypt.hashSync(req.body.password, saltRounds);
+
+    const userObject = {
+        name: req.body.name,
+        emailAddress: req.body.emailAddress,
+        password: passwordHash,
+    };
+
+    const newUser = await createUser(userObject);
+
+    if (newUser) {
+        return res.status(200).json({
+            title: "User added to database",
+        });
+    }
 }
 
 module.exports = {
     handleLogin,
     handleUser,
+    registerUser,
+    handleUsers,
 };
