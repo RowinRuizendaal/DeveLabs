@@ -10,6 +10,7 @@ const userSchema = new Schema({
     name: String,
     emailAddress: String,
     password: String,
+    profilepicture: String,
 });
 
 exports.userSchema = userSchema;

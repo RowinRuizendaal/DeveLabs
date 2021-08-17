@@ -39,12 +39,17 @@ export default {
   },
   data() {
     return {
-      brand: "Clip Path",
+      brand: "DeveLabs",
       navigation: [
         {
           title: "Home",
           slug: "dashboard",
           icon: "fa fa-home",
+        },
+        {
+          title: "Blogs",
+          slug: "blogs",
+          icon: "fa fa-newspaper-o",
         },
         {
           title: "Gebruikers",

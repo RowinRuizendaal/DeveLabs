@@ -1,11 +1,11 @@
 <template>
   <div class="profile-card">
     <div class="profile-card-header">
-      <img src="https://randomuser.me/api/portraits/women/31.jpg" alt="" />
+      <img :src="card.profilepicture" alt="" />
     </div>
 
     <div class="profile-card-body">
-      <h3>Template</h3>
+      <h3>{{ card.name }}</h3>
       <p>{{ card.emailAddress }}</p>
     </div>
     <div class="profile-card-footer"></div>

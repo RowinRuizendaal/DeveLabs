@@ -7,9 +7,9 @@ const { authenticateToken } = require("../middleware/authenticateToken.js");
 
 router
     .post("/api/login", userControllers.handleLogin) // login
-    .post("/api/register", authenticateToken, userControllers.registerUser) // register user
+    .post("/api/register", userControllers.registerUser) // register user
     .get("/api/user", authenticateToken, userControllers.handleUser) // Get user
-    .get("/api/users", userControllers.handleUsers) // Get users
+    .get("/api/users", authenticateToken, userControllers.handleUsers) // Get users
     .get("/api/blogs", authenticateToken, blogControllers.getBlogs); // Get blogs
 
 module.exports = router;

@@ -39,19 +39,19 @@ async function findOneUser(id) {
  *
  */
 
-async function createUser({ firstName, surName, emailAddress, password }) {
+async function createUser({ name, emailAddress, password, profilepicture }) {
     const newUser = await Users.create({
-        firstName: firstName,
-        surName: surName,
+        name: name,
         emailAddress: emailAddress,
         password: password,
+        profilepicture: profilepicture,
     });
 
     return newUser;
 }
 
 async function getAllBlogs() {
-    const blogs = await Blogs.findOne();
+    const blogs = await Blogs.find();
 
     if (blogs) {
         return blogs;

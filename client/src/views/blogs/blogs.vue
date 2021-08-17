@@ -7,15 +7,15 @@
       v-if="!loading"
     >
       <Topbar />
-      <div class="cardBox" v-if="!loading">
+      <div class="cardBox">
         <div v-for="(item, index) in cards" :key="index">
           <Card :card="item" @click.native="openDialog" />
         </div>
       </div>
       <div class="wrapper">
-        <div v-for="(item, index) in userdata" :key="index">
+        <!-- <div v-for="(item, index) in userdata" :key="index">
           <User :card="item" />
-        </div>
+        </div> -->
       </div>
       <div>
         <vue-final-modal
@@ -23,7 +23,7 @@
           classes="modal-container"
           content-class="modal-content"
         >
-          <span class="modal__title">Voeg gebruiker toe</span>
+          <span class="modal__title">Voeg blog toe</span>
           <div class="modal__content">
             <form
               v-on:submit="submit"
@@ -66,7 +66,7 @@
 <script>
 import Sidebar from "../../components/sidebar/sidebar.vue";
 import Topbar from "../../components/topbar/topbar.vue";
-import User from "../../components/userCards/card.vue";
+// import User from "../../components/userCards/card.vue";
 import Card from "../../components/wide-card/card.vue";
 import axios from "axios";
 
@@ -75,23 +75,23 @@ export default {
   components: {
     Sidebar,
     Topbar,
-    User,
+    // User,
     Card,
   },
   data() {
     return {
-      loading: true,
+      loading: false,
       showModal: false,
       userName: "",
       email: "",
       password: "",
       error: "",
       popup: false,
-      userdata: [],
+      blogdata: [],
       cards: [
         {
-          number: "",
-          name: "Voeg gebruiker toe",
+          number: "2",
+          name: "Voeg blog toe",
           icon: "fa fa-plus",
         },
       ],
@@ -140,40 +140,26 @@ export default {
           console.log(err);
         });
     },
-    showSign() {
-      this.$notify({
-        group: "foo",
-        title: "<h2>Sucess</h2>",
-        text: `${this.userName} is toegevoegd aan gebruikers`,
-        position: "top left",
-        type: "success",
-        duration: 15000,
-      });
-    },
-    updateUi() {
-      const token = localStorage.getItem("token");
-      axios
-        .get("/api/users", {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((res) => {
-          this.userdata = res.data.getUsers;
-          this.loading = false;
-        })
-        .catch((err) => {
-          this.error = err;
-          console.log(err);
-        });
-    },
   },
   mounted() {
-    this.updateUi();
+    const token = localStorage.getItem("token");
+    axios
+      .get("/api/blogs", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        this.blogdata = res.data.getBlogs;
+      })
+      .catch((err) => {
+        this.error = err;
+        console.log(err);
+      });
   },
-  computed: {},
   watch: {
-    userdata: function (val) {
+    blogdata: function (val) {
       this.cards[0].number = val.length;
     },
   },
@@ -181,6 +167,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "users.scss";
-@import "@/components/modal/modal.scss";
+@import "blogs.scss";
 </style>

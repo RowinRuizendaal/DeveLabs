@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
+const axios = require("axios");
 
 const {
     checkValidUser,
@@ -50,10 +51,14 @@ async function registerUser(req, res) {
     //Salt the plain password
     const passwordHash = bcrypt.hashSync(req.body.password, saltRounds);
 
+    const width = Math.floor(Math.random() * 1200) + 1;
+    const height = Math.floor(Math.random() * 900) + 1;
+
     const userObject = {
         name: req.body.name,
         emailAddress: req.body.emailAddress,
         password: passwordHash,
+        profilepicture: `https://source.unsplash.com/random/${height}x${width}`,
     };
 
     const newUser = await createUser(userObject);

@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import Sidebar from "../../components/sidebar/sidebar.vue";
 import Topbar from "../../components/topbar/topbar.vue";
 import Card from "../../components/wide-card/card.vue";
@@ -184,25 +183,6 @@ export default {
         },
       ],
     };
-  },
-  mounted() {
-    const token = localStorage.getItem("token");
-    axios
-      .get("/api/blogs", {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        // this.name = res.data.userData.firstName;
-        // this.blogData = res.data.getBlogs;
-        this.loading = false;
-      })
-      .catch((err) => {
-        this.error = err;
-        console.log(err);
-      });
   },
 };
 </script>
