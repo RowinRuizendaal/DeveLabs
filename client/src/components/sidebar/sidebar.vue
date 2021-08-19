@@ -33,7 +33,7 @@ export default {
   components: {},
   methods: {
     logout() {
-      localStorage.clear();
+      this.$cookie.delete("token");
       this.$router.push("/");
     },
   },

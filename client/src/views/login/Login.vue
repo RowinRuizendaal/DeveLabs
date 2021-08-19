@@ -71,7 +71,7 @@ export default {
         .post("/api/login", data)
         .then((response) => {
           if (response.status === 200) {
-            localStorage.setItem("token", response.data.token);
+            this.$cookie.set("token", response.data.token);
             this.$router.push("/dashboard");
           }
         })

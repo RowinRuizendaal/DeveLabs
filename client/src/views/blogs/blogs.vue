@@ -103,7 +103,6 @@ export default {
     },
     submit(e) {
       e.preventDefault();
-      const token = localStorage.getItem("token");
 
       const data = {
         name: this.userName,
@@ -123,11 +122,7 @@ export default {
       }
 
       axios
-        .post("/api/register", data, {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        })
+        .post("/api/register", data)
         .then((response) => {
           if (response.status === 200) {
             this.showModal = false;
@@ -142,13 +137,8 @@ export default {
     },
   },
   mounted() {
-    const token = localStorage.getItem("token");
     axios
-      .get("/api/blogs", {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
+      .get("/api/blogs")
       .then((res) => {
         console.log(res.data);
         this.blogdata = res.data.getBlogs;

@@ -10,6 +10,6 @@ router
     .post("/api/register", userControllers.registerUser) // register user
     .get("/api/user", authenticateToken, userControllers.handleUser) // Get user
     .get("/api/users", authenticateToken, userControllers.handleUsers) // Get users
-    .get("/api/blogs", authenticateToken, blogControllers.getBlogs); // Get blogs
+    .get("/api/blogs", blogControllers.getBlogs); // Get blogs
 
 module.exports = router;

@@ -1,2 +1,5 @@
 import axios from "axios";
-export default axios.create({});
+import Vue from "vue";
+
+axios.defaults.headers.common["Authorization"] =
+  "Bearer " + Vue.cookie.get("token");
