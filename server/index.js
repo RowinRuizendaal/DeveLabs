@@ -5,6 +5,7 @@ const router = require("./app/routes/router.js");
 const dbConnection = require("./app/config/dbConnection.js");
 const app = express();
 const http = require("http").createServer(app);
+const path = require("path");
 const io = require("socket.io")(http, {
     cors: {
         origin: "http://localhost:8080",

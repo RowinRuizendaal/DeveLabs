@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Axios from "axios";
 
 import Login from "../views/login/Login.vue";
 import Dashboard from "../views/dashboard/Dashboard.vue";
@@ -46,9 +47,11 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!Vue.cookie.get("token")) {
+    const Token = await validateToken(Vue.cookie.get("token"));
+
+    if (!Vue.cookie.get("token") || !Token) {
       next({
         name: "Login",
       });
@@ -59,5 +62,16 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
+const validateToken = async (token) => {
+  const checkToken = Axios.get(
+    `http://localhost:5000/api/verify/${token}`
+  ).catch((err) => {
+    // Token is not valid from back-end
+    err ? router.push("/") : true;
+    return false;
+  });
+  return await checkToken;
+};
 
 export default router;

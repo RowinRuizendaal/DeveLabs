@@ -16,9 +16,15 @@ Vue.use(VueCookie);
 
 Vue.config.productionTip = false;
 
-// need to refactor this is new file
-Axios.defaults.headers.common["Authorization"] =
-  "Bearer " + Vue.cookie.get("token");
+Axios.interceptors.request.use(
+  (config) => {
+    const token = Vue.cookie.get("token");
+    const auth = token ? `Bearer ${token}` : "";
+    config.headers.common["Authorization"] = auth;
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 new Vue({
   router,

@@ -1,8 +1,7 @@
 const bcrypt = require("bcrypt");
 const Users = require("../models/user.js");
 const Blogs = require("../models/blogs.js");
-
-const jwt = require("jsonwebtoken");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 async function checkValidUser(email, password) {
     const user = await Users.findOne({
@@ -60,6 +59,18 @@ async function getAllBlogs() {
     console.log("Error gettings blogs");
 }
 
+async function getBlog(blogID) {
+    const blogs = await Blogs.findOne({ _id: blogID }).catch((err) =>
+        console.log(err)
+    );
+
+    if (blogs) {
+        return blogs;
+    }
+
+    console.log("Error gettings blogs");
+}
+
 async function getAllUsers() {
     const users = await Users.find()
         .select(["-password"])
@@ -75,5 +86,6 @@ module.exports = {
     findOneUser,
     createUser,
     getAllBlogs,
+    getBlog,
     getAllUsers,
 };

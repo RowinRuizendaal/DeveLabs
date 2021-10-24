@@ -16,7 +16,7 @@ async function handleLogin(req, res) {
     if (user == null || user === false) {
         return res.sendStatus(400);
     } else {
-        let token = jwt.sign({ userId: user._id }, "JWTSECRET");
+        let token = jwt.sign({ userId: user._id }, process.env.SECRET);
         return res.status(200).json({
             title: "Login sucessfull",
             token: token,

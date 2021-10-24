@@ -7,11 +7,12 @@ function authenticateToken(req, res, next) {
 
     if (token == null || token === "") return res.sendStatus(401);
 
-    jwt.verify(token, "JWTSECRET", (err, user) => {
-        if (err)
+    jwt.verify(token, process.env.SECRET, (err, user) => {
+        if (err) {
             return res.status(403).json({
                 title: "unauthorized",
             });
+        }
         req.user = user;
         next();
     });
