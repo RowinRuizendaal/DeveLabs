@@ -49,6 +49,16 @@ async function createUser({ name, emailAddress, password, profilepicture }) {
     return newUser;
 }
 
+async function createBlog({ title, image, content }) {
+    const newBlog = await Blogs.create({
+        title: title,
+        image: image,
+        content: content,
+    });
+
+    return newBlog;
+}
+
 async function getAllBlogs() {
     const blogs = await Blogs.find();
 
@@ -87,5 +97,6 @@ module.exports = {
     createUser,
     getAllBlogs,
     getBlog,
+    createBlog,
     getAllUsers,
 };

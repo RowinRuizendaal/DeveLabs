@@ -13,8 +13,10 @@ router
     .get("/api/user", authenticateToken, userControllers.handleUser) // Get user
     .get("/api/users", authenticateToken, userControllers.handleUsers) // Get users
     .get("/api/blogs", authenticateToken, blogControllers.getBlogs) // Get blogs
-    .get("/api/blogs/:id", blogControllers.getBlogsbyID) // Get specific blog based on id
+    .get("/api/blogs/:id", authenticateToken, blogControllers.getBlogsbyID) // Get specific blog based on id
+    .post("/api/addblog", authenticateToken, blogControllers.addBlog) // Add a new blog
     //Public API
-    .get("/api/public/blogs", blogControllers.getBlogs); // Get blogs
+    .get("/api/public/blogs", blogControllers.getBlogs) // Get blogs
+    .get("/api/public/blogs/:id", blogControllers.getBlogsbyID); // Get specific blog based on id
 
 module.exports = router;

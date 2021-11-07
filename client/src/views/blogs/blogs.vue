@@ -13,9 +13,9 @@
         </div>
       </div>
       <div class="wrapper">
-        <!-- <div v-for="(item, index) in userdata" :key="index">
+        <div v-for="(item, index) in blogdata" :key="index">
           <User :card="item" />
-        </div> -->
+        </div>
       </div>
       <div>
         <vue-final-modal
@@ -32,29 +32,28 @@
             >
               <input
                 type="text"
-                name="username"
-                id="name"
-                placeholder="Username"
-                v-model="userName"
+                name="title"
+                id="title"
+                placeholder="title"
+                v-model="title"
                 required
               />
               <input
-                type="email"
-                name="email"
-                id="email"
-                placeholder="email"
-                v-model="email"
+                type="text"
+                name="image"
+                id="image"
+                placeholder="image url"
+                v-model="image"
                 required
               />
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Password"
-                v-model="password"
+              <textarea
+                name="content"
+                id="content"
+                placeholder="content"
+                v-model="content"
                 required
               />
-              <input type="submit" value="Add user" />
+              <input type="submit" value="Add blog" />
             </form>
           </div>
         </vue-final-modal>
@@ -66,25 +65,25 @@
 <script>
 import Sidebar from "../../components/sidebar/sidebar.vue";
 import Topbar from "../../components/topbar/topbar.vue";
-// import User from "../../components/userCards/card.vue";
+import User from "../../components/blogCards/card.vue";
 import Card from "../../components/wide-card/card.vue";
 import axios from "axios";
 
 export default {
-  name: "users",
+  name: "blogs",
   components: {
     Sidebar,
     Topbar,
-    // User,
+    User,
     Card,
   },
   data() {
     return {
       loading: false,
       showModal: false,
-      userName: "",
-      email: "",
-      password: "",
+      title: "",
+      image: "",
+      content: "",
       error: "",
       popup: false,
       blogdata: [],
@@ -101,28 +100,49 @@ export default {
     openDialog() {
       this.showModal = true;
     },
+    showSign() {
+      this.$notify({
+        group: "foo",
+        title: "<h2>Sucess</h2>",
+        text: `${this.title} is toegevoegd aan blogs`,
+        position: "top left",
+        type: "success",
+        duration: 15000,
+      });
+    },
+    updateUi() {
+      axios
+        .get("/api/blogs")
+        .then((res) => {
+          this.blogdata = res.data.getBlogs;
+        })
+        .catch((err) => {
+          this.error = err;
+          console.log(err);
+        });
+    },
     submit(e) {
       e.preventDefault();
 
       const data = {
-        name: this.userName,
-        emailAddress: this.email,
-        password: this.password,
+        title: this.title,
+        image: this.image,
+        content: this.content,
       };
 
       if (
-        data.name === "" ||
-        !data.name ||
-        !data.emailAddress === "" ||
-        !data.emailAddress ||
-        data.password === "" ||
-        !data.password
+        data.title === "" ||
+        !data.title ||
+        !data.image === "" ||
+        !data.image ||
+        data.content === "" ||
+        !data.content
       ) {
-        return (this.error = "Not a valid user");
+        return (this.error = "Something went wrong");
       }
 
       axios
-        .post("/api/register", data)
+        .post("/api/addblog", data)
         .then((response) => {
           if (response.status === 200) {
             this.showModal = false;
@@ -137,16 +157,7 @@ export default {
     },
   },
   mounted() {
-    axios
-      .get("/api/blogs")
-      .then((res) => {
-        console.log(res.data);
-        this.blogdata = res.data.getBlogs;
-      })
-      .catch((err) => {
-        this.error = err;
-        console.log(err);
-      });
+    this.updateUi();
   },
   watch: {
     blogdata: function (val) {

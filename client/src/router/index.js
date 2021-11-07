@@ -65,12 +65,18 @@ router.beforeEach(async (to, from, next) => {
 
 const validateToken = async (token) => {
   const checkToken = Axios.get(
-    `http://localhost:5000/api/verify/${token}`
-  ).catch((err) => {
-    // Token is not valid from back-end
-    err ? router.push("/") : true;
-    return false;
-  });
+    `https://develabs.herokuapp.com/api/verify/${token}`
+  )
+    .then((response) => {
+      if (response.status === 200) {
+        return true;
+      }
+    })
+    .catch((err) => {
+      //   // Token is not valid from back-end
+      err ? router.push("/") : true;
+      return false;
+    });
   return await checkToken;
 };
 
